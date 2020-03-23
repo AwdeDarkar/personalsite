@@ -57,10 +57,10 @@ These are my plans for the website versions and a log of past changes:
   + Displayed a simple HTML Webpage
   + Did initial planning
 
-0.2: Sketched Out
+0.2: Sketched Out - done 2020-03-23 17:04
 
   + SQLite database created with the needed schema
-  + Filler content for all main webpages
+  + Filler content made for all main webpages
 
 0.3: Skills System
 
