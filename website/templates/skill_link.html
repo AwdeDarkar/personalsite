@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Link a skill with a post{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <label for="selpost">Choose Post</label>
+    <select id="selpost" name="post_id">
+        {% for post in posts %}
+            <option value={{ post.id }}>{{ post.title }}</option>
+        {% endfor %}
+    </select>
+    <label for="selskill">Choose Skill</label>
+    <select id="selskill" name="skill_id">
+        {% for skill in skills %}
+            <option value={{ skill.id }}>{{ skill.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit">Link</input>
+</form>
+{% endblock %}

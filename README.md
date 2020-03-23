@@ -62,15 +62,15 @@ These are my plans for the website versions and a log of past changes:
   + SQLite database created with the needed schema
   + Filler content made for all main webpages
 
-0.3: Skills System
+0.3: Skills System - done 2020-03-23 19:50
 
-  + Be able to create and delete skills as needed.
+  + Be able to create skills as needed.
   + Be able to create a plaintext blog post and 'tag' it with a skill so that the skill appears
     under the relevant skills feed.
 
 0.4: Content Added
 
-  + Replace filler content with real content (esp. Home, About, and Contact pages)
+  + Replace filler content with real (minimal) content (esp. Home, About, and Contact pages)
 
 0.5: Styling
 

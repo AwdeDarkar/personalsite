@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Skills{% endblock %}
+
+{% block content %}
+This is the skills list.
+<a href="/skills/create">Create a skill here</a>
+<a href="/skills/post">Create a blog post here</a>
+<a href="/skills/link">Link a blog post and skill here</a>
+
+<ul>
+    {% for skill in skills %}
+    <li><a href="/skills/filter/{{ skill.name }}">{{ skill.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

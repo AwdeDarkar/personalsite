@@ -31,38 +31,87 @@ bp = Blueprint('auth', __name__, url_prefix='/')
 
 @bp.route("/", methods=("GET",))
 def view_home():
-    return """
-    <html>
-        <body>
-            <h1>Ben Croisdale personal homepage</h1>
-            <p>Pages:
-                <ul>
-                    <li><a href="/skills">Skills</a></li>
-                    <li><a href="/predictions">Predictions</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                </ul>
-            </p>
-        </body>
-    </html>
-    """
+    return render_template("home.html")
 
 
 @bp.route("/skills")
 def view_skills():
-    return "This should list skills"
+    db = get_db()
+    skills = db.execute("select * from skill")
+    return render_template("skills.html", skills=skills)
+
+
+@bp.route("/skills/filter/<skillname>")
+def view_skill_filter(skillname):
+    db = get_db()
+    posts = db.execute(f"""select post.title, post.body from post, post_skill, skill where
+    post.id = post_skill.post_id and skill.id = post_skill.skill_id and
+    skill.name = "{skillname}"
+    """)
+    return render_template("skill_filter.html", skillname=skillname, posts=posts)
+
+
+@bp.route("/skills/create", methods=("GET", "POST"))
+def view_skill_create():
+    if request.method == "GET":
+        return render_template("skill_create.html")
+    elif request.method == "POST":
+        db = get_db()
+        sname = request.form["name"]
+        db.execute(
+            "insert into skill (name) values (?)",
+            (sname,)
+        )
+        db.commit()
+        return render_template("skill_create.html")
+
+
+@bp.route("/skills/post", methods=("GET", "POST"))
+def view_skill_post():
+    if request.method == "GET":
+        return render_template("skill_post.html")
+    elif request.method == "POST":
+        db = get_db()
+        ptitle = request.form["title"]
+        pbody = request.form["body"]
+        db.execute(
+            "insert into post (author_id, title, body) values (?, ?, ?)",
+            (0, ptitle, pbody)
+        )
+        db.commit()
+        return render_template("skill_post.html")
+
+
+@bp.route("/skills/link", methods=("GET", "POST"))
+def view_skill_link():
+    db = get_db()
+    posts = db.execute("select * from post")
+    skills = db.execute("select * from skill")
+    if request.method == "GET":
+        return render_template("skill_link.html", posts=posts,
+                               skills=skills)
+    elif request.method == "POST":
+        post_id = request.form["post_id"]
+        skill_id = request.form["skill_id"]
+        db.execute(
+            "insert into post_skill (post_id, skill_id) values (?, ?)",
+            (post_id, skill_id)
+        )
+        db.commit()
+        return render_template("skill_link.html", posts=posts,
+                               skills=skills)
 
 
 @bp.route("/predictions")
 def view_predictions():
-    return "This should list public predictions"
+    return render_template("predictions.html")
 
 
 @bp.route("/about")
 def view_about():
-    return "This should list stuff about me"
+    return render_template("about.html")
 
 
 @bp.route("/contact")
 def view_contact():
-    return "This should list my public contact info"
+    return render_template("contact.html")
