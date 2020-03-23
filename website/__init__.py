@@ -44,9 +44,15 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    from . import db
+    db.init_app(app)
+
     # Deliver a very simple webpage, minimal requirements for v0.1
     @app.route("/test")
     def testpage():
         return "<html><body><h1>Flask up and running! You can confirm 0.1 now!"
+
+    from . import auth
+    app.register_blueprint(auth.bp)
 
     return app
