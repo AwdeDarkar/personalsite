@@ -52,10 +52,10 @@ Versions
 
 These are my plans for the website versions and a log of past changes:
 
-0.1: Minimal State
+0.1: Minimal State - done 2020-03-23 10:44
 
-  + Display a simple HTML Webpage
-  + Have initial planning done
+  + Displayed a simple HTML Webpage
+  + Did initial planning
 
 0.2: Sketched Out
 
