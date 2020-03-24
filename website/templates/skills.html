@@ -3,10 +3,17 @@
 {% block title %}Skills{% endblock %}
 
 {% block content %}
-This is the skills list.
-<a href="/skills/create">Create a skill here</a>
-<a href="/skills/post">Create a blog post here</a>
-<a href="/skills/link">Link a blog post and skill here</a>
+This is is a list of my skills which I have developed enough to be worth advertising professionally.
+With each skill, I have created a feed that lists blog posts and projects I have created showcasing
+that skill.
+
+<p>This will die soon
+<ul>
+    <li><a href="/skills/create">Create a skill here</a></li>
+    <li><a href="/skills/post">Create a blog post here</a></li>
+    <li><a href="/skills/link">Link a blog post and skill here</a></li>
+</ul>
+</p>
 
 <ul>
     {% for skill in skills %}
