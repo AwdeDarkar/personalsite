@@ -68,17 +68,37 @@ These are my plans for the website versions and a log of past changes:
   + Be able to create a plaintext blog post and 'tag' it with a skill so that the skill appears
     under the relevant skills feed.
 
-0.4: Content Added
+0.4: Content Added - done 2020-03-27 09:24
 
-  + Replace filler content with real (minimal) content (esp. Home, About, and Contact pages)
+  + Replaced filler content with real (minimal) content (esp. Home, About, and Contact pages)
 
-0.5: Styling
+0.5: Styling - done 2020-03-27 18:51
 
   + Simple (but decent-looking) SASS styling everywhere
   + Research frameworks for when better styling is implemented (probablly Material or Bootstrap)
+    + We've got a winner! [Foundation](https://get.foundation/) is like Bootsrap but faster and more
+      versatile
+
+0.6: Auth and Controls
+
+  + Build a user authentication system
+  + Lock the skills setup behind that system
+  + Make the skill management less evil
+  + Add basic contact form
+
+0.7: Frameworks
+
+  + Setup bower to work with flask
+  + Setup react.js to work with flask
+  + Setup foundation to work with flask
+  + Dockerize
+
+0.8: Prehosting
+
+  + Extract private information into environment vars
+  + Careful security check, got through a checklist
 
 1.0: Hosting and Public Release
 
   + Fix all the dumb little bugs and typos (yes, they are there, read closely)
-  + Dockerize
   + Host on metis or frene for now, start planning for move to AWS
