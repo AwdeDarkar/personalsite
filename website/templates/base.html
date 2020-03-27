@@ -1,16 +1,23 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Ben Croisdale</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<nav>
-  <h1>Ben Croisdale</h1>
-  <ul>
-    <li><a href="/skills">Skills</a></li>
-    <li><a href="/predictions">Predictions</a></li>
-    <li><a href="/about">About</a></li>
-    <li><a href="/contact">Contact</a></li>
-  </ul>
-</nav>
-<section class="content">
+<html>
+<head>
+    <title>{% block title %}{% endblock %} - Ben Croisdale</title>
+    <link href="https://fonts.googleapis.com/css?family=PT+Mono|PT+Sans|PT+Sans+Caption|PT+Sans+Narrow|PT+Serif&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.scss.css') }}">
+</head>
+<body>
+    <div class="header">
+        <nav>
+            <h1><a href="/">Ben Croisdale</a></h1>
+            <ul>
+                <li><a href="/skills">Skills</a></li>
+                <li><a href="/predictions">Predictions</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+<div class="content">
   <header>
     {% block header %}{% endblock %}
   </header>
@@ -18,4 +25,5 @@
     <div class="flash">{{ message }}</div>
   {% endfor %}
   {% block content %}{% endblock %}
-</section>
+</div>
+</html>

@@ -19,6 +19,7 @@ This script creates the flask application.
 import os
 
 from flask import Flask
+from sassutils.wsgi import SassMiddleware
 
 
 def create_app(test_config=None):
@@ -38,6 +39,10 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
+    app.wsgi_app = SassMiddleware(app.wsgi_app, {
+       "website": ("static/scss", "static/css", "/static/css"),
+    })
+
     # Ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
@@ -46,11 +51,6 @@ def create_app(test_config=None):
 
     from . import db
     db.init_app(app)
-
-    # Deliver a very simple webpage, minimal requirements for v0.1
-    @app.route("/test")
-    def testpage():
-        return "<html><body><h1>Flask up and running! You can confirm 0.1 now!"
 
     from . import auth
     app.register_blueprint(auth.bp)

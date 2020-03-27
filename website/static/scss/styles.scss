@@ -1,0 +1,160 @@
+/*
+ Personal Website Styling Source
+ */
+
+/**** COLORS ****/
+
+// Maroon
+$prishade0: #D26254;
+$prishade1: #D2412E;
+$prishade2: #AE4100;
+$prishade3: #6D3129;
+$prishade4: #530800;
+
+// Blue
+$cmpshade0: #479AAD;
+$cmpshade1: #2994AD;
+$cmpshade2: #02586C;
+$cmpshade3: #1A3C43;
+$cmpshade4: #002A33;
+
+// Green
+$altshade0: #9ACA51;
+$altshade1: #8CCA2D;
+$altshade2: #61A000;
+$altshade3: #4B6426;
+$altshade4: #2E4C00;
+
+// White
+$smoke:   #F5F5F5;
+$snow:    #FFFAFA;
+$ghost:   #F8F8FF;
+$priwht:  #FFF3F3;
+$cmpwhi:  #F6FEFF;
+$altwht:  #F9FFEE;
+
+// Black
+$char:   #36454F;
+$raisin: #242124;
+$licor:  #1A1110;
+$priblk: #0F0706;
+$cmpblk: #060C0D;
+$altblk: #0A0F02;
+
+/**** FONTS ****/
+
+$body:       'PT Sans', sans-serif;
+$caption:    'PT Sans Caption', sans-serif;
+$subcaption: 'PT Sans Narrow', sans-serif;
+$serif:      'PT Serif', serif;
+$mono:       'PT Mono', monospace;
+
+/**** MIXINS ****/
+
+@mixin colored-block($color, $textcolor: $licor)
+{
+    /* Colored Blocks can be used to set apart text blocks */
+    background-color: $color;
+    color: $licor;
+    border-radius: 3px;
+}
+
+@mixin subcaption-style($size)
+{
+    /* Subcaptions have very similar style save their size */
+    font-family: $subcaption;
+    font-color: $licor;
+    font-size: $size;
+}
+
+/**** STYLES ****/
+
+/** Basic Styles **/
+
+h1
+{
+    font-family: $caption;
+    font-color: $licor;
+    font-size: 24px;
+}
+
+h2
+{
+    @include subcaption-style(20px);
+}
+
+h3
+{
+    @include subcaption-style(18px);
+}
+
+h4
+{
+    @include subcaption-style(16px);
+}
+
+body
+{
+    background: $cmpshade1;
+    font-family: $body;
+    font-color: $licor;
+    font-size: 14px;
+    height: 100%;
+}
+
+.content
+{
+    background-color: $ghost;
+    border-radius: 4px;
+    margin-left: 4%;
+    margin-right: 4%;
+    height: 100%;
+    min-height: 100% !important;
+    padding: 12px;
+}
+
+/** Header Formatting **/
+
+.header
+{
+    background-color: $prishade3;
+    text-align: center;
+    padding-top: 10px;
+    margin: -12px;
+    margin-bottom: 5px;
+
+    nav
+    {
+        h1 {
+            font-family: $body;
+            color: $altwht;
+            font-size: 24px;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        li {
+            float: left;
+
+            a {
+                display: block;
+                text-align: center;
+                padding: 16px;
+            }
+
+            a:hover {
+                background-color: $prishade4;
+            }
+        }
+
+        a {
+            color: $altwht;
+            text-decoration: none;
+        }
+    }
+}
