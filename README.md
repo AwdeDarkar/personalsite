@@ -98,15 +98,22 @@ These are my plans for the website versions and a log of past changes:
   + Make the skill management less evil
   + Add basic contact form
 
-0.7: Frameworks
+0.7.0: Basic Frameworks
 
   + Setup bower to work with flask
+
+0.7.1: Javascript
+
+  + Setup typescript to work with flask
   + Setup react.js to work with flask
+
+0.7.2: Style Framework
+
   + Setup foundation to work with flask
-  + Dockerize
 
 0.8: Prehosting
 
+  + Dockerize
   + Extract private information into environment vars
   + Careful security check, go through a checklist
 
