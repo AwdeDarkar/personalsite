@@ -79,7 +79,16 @@ These are my plans for the website versions and a log of past changes:
     + We've got a winner! [Foundation](https://get.foundation/) is like Bootsrap but faster and more
       versatile
 
-0.6: Auth and Controls
+0.6.0: Refactor
+
+  + Create django-style manage.py
+  + Switch over to SQLAlchemy
+  + Break each page into its own file
+  + Break templates into separate subdirectories
+  + Reorganize 'blueprints' and urls
+  + Clean up testing code
+
+0.6.1: Auth and Controls
 
   + Build a user authentication system
   + Lock the skills setup behind that system
@@ -96,7 +105,7 @@ These are my plans for the website versions and a log of past changes:
 0.8: Prehosting
 
   + Extract private information into environment vars
-  + Careful security check, got through a checklist
+  + Careful security check, go through a checklist
 
 1.0: Hosting and Public Release
 

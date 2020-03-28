@@ -14,8 +14,13 @@
                 <li><a href="/predictions">Predictions</a></li>
                 <li><a href="/about">About</a></li>
                 <li><a href="/contact">Contact</a></li>
+                <li><a href="/login">Log In</a></li>
+                <li><a href="/register">Register</a></li>
             </ul>
         </nav>
+        {% if current_user.is_authenticated %}
+            <h2>Logged in as {{ current_user.name }}</h2>
+        {% endif %}
     </div>
 <div class="content">
   <header>

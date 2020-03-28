@@ -20,6 +20,17 @@ import os
 
 from flask import Flask
 from sassutils.wsgi import SassMiddleware
+from flask_login import LoginManager
+
+from website.db import get_db
+
+
+def get_user_by_id(user_id):
+    if user_id is None:
+        return None
+    return get_db().execute(
+        'SELECT * FROM user WHERE id = ?', (user_id,)
+    ).fetchone()
 
 
 def create_app(test_config=None):
@@ -32,6 +43,7 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY="dev",
         DATABASE=os.path.join(app.instance_path, "development.db.sqlite3"),
+        SQLALCHEMY_DATABASE_URI=os.path.join(app.instance_path, "alchemy.db.sqlite3"),
     )
 
     if not test_config:
@@ -51,6 +63,14 @@ def create_app(test_config=None):
 
     from . import db
     db.init_app(app)
+
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = "users.login"
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return get_user_by_id(user_id)
 
     from . import auth
     app.register_blueprint(auth.bp)
