@@ -36,6 +36,13 @@ class SiteModel(object):
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     """ Datetime the object was updated """
 
+    @classmethod
+    def get_by_id(cls, session, object_id):
+        """ Query the object table and get by id """
+        if object_id is None:
+            return None
+        return session.query(cls).filter_by(id=object_id).first()
+
 
 class User(SiteModel, Base):
     """ Site users, there should only ever by one on this site (me) """
@@ -46,6 +53,14 @@ class User(SiteModel, Base):
 
     password = Column(String, nullable=False)
     """ The user's hashed password """
+
+    posts = relationship("Post", back_populates="author")
+
+    @classmethod
+    def get_by_name(cls, session, username):
+        """ Query the user table and return the user with the name if it exists """
+        user = session.query(cls).filter_by(username=username).first()
+        return user
 
 
 class Post(SiteModel, Base):
@@ -63,6 +78,8 @@ class Post(SiteModel, Base):
 
     author = relationship("User", back_populates="posts")
 
+    skills = relationship("PostSkill", back_populates="post")
+
 
 class Skill(SiteModel, Base):
     """ A skill (collects blog posts) """
@@ -70,6 +87,8 @@ class Skill(SiteModel, Base):
 
     name = Column(String, nullable=False)
     """ Name of the skill """
+
+    posts = relationship("PostSkill", back_populates="skill")
 
 
 class PostSkill(SiteModel, Base):

@@ -18,10 +18,10 @@ Adapted from <https://flask.palletsprojects.com/en/1.1.x/tutorial/database/>
 """
 
 import sqlite3
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-import click
 from flask import current_app, g
-from flask.cli import with_appcontext
 
 
 def get_db():
@@ -35,6 +35,20 @@ def get_db():
     return g.db
 
 
+def get_engine():
+    """ Get the SQLAlchemy engine connected to the database """
+    if "engine" not in g:
+        g.engine = create_engine("sqlite:///" + current_app.config["DATABASE"])
+    return g.engine
+
+
+def get_session():
+    """ Get a fresh alchemy database session """
+    if "Session" not in g:
+        g.Session = sessionmaker(bind=get_engine())
+    return g.Session()
+
+
 def close_db(e=None):
     db = g.pop('db', None)
 
@@ -42,21 +56,5 @@ def close_db(e=None):
         db.close()
 
 
-def init_db():
-    db = get_db()
-
-    with current_app.open_resource('schema.sql') as f:
-        db.executescript(f.read().decode('utf8'))
-
-
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    """Clear the existing data and create new tables."""
-    init_db()
-    click.echo('Initialized the database.')
-
-
 def init_app(app):
     app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)

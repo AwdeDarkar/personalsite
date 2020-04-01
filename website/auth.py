@@ -24,17 +24,10 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from website.db import get_db
+from website.db import get_session
+from website import models
 
 bp = Blueprint('auth', __name__, url_prefix='/')
-
-
-def get_user_by_id(user_id):
-    if user_id is None:
-        return None
-    return get_db().execute(
-        'SELECT * FROM user WHERE id = ?', (user_id,)
-    ).fetchone()
 
 
 def login_required(view):
@@ -51,7 +44,7 @@ def login_required(view):
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
-    g.user = get_user_by_id(user_id)
+    g.user = models.User.get_by_id(get_session(), user_id)
 
 
 @bp.route("/", methods=("GET",))
@@ -64,24 +57,20 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        db = get_db()
+        dbsess = get_session()
         error = None
 
         if not username:
-            error = 'Username is required.'
+            error = "Username is required."
         elif not password:
-            error = 'Password is required.'
-        elif db.execute(
-            'SELECT id FROM user WHERE username = ?', (username,)
-        ).fetchone() is not None:
-            error = 'User {} is already registered.'.format(username)
+            error = "Password is required."
+        elif models.User.get_by_name(dbsess, username) is not None:
+            error = f"User {username} is already registered."
 
         if error is None:
-            db.execute(
-                'INSERT INTO user (username, password) VALUES (?, ?)',
-                (username, generate_password_hash(password))
-            )
-            db.commit()
+            user = models.User(username=username, password=generate_password_hash(password))
+            dbsess.add(user)
+            dbsess.commit()
             return redirect(url_for('auth.login'))
 
         flash(error)
@@ -94,20 +83,18 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        db = get_db()
+        dbsess = get_session()
         error = None
-        user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username,)
-        ).fetchone()
+        user = models.User.get_by_name(dbsess, username)
 
         if user is None:
-            error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+            error = "Incorrect username."
+        elif not check_password_hash(user.password, password):
+            error = "Incorrect password."
 
         if error is None:
             session.clear()
-            session['user_id'] = user['id']
+            session['user_id'] = user.id
             return redirect("/")
 
         flash(error)
@@ -117,18 +104,16 @@ def login():
 
 @bp.route("/skills")
 def view_skills():
-    db = get_db()
-    skills = db.execute("select * from skill")
+    dbsess = get_session()
+    skills = dbsess.query(models.Skill)
     return render_template("skills.html", skills=skills)
 
 
 @bp.route("/skills/filter/<skillname>")
 def view_skill_filter(skillname):
-    db = get_db()
-    posts = db.execute(f"""select post.title, post.body from post, post_skill, skill where
-    post.id = post_skill.post_id and skill.id = post_skill.skill_id and
-    skill.name = "{skillname}"
-    """)
+    dbsess = get_session()
+    skill = dbsess.query(models.Skill).filter_by(name=skillname).first()
+    posts = skill.posts
     return render_template("skill_filter.html", skillname=skillname, posts=posts)
 
 
@@ -138,13 +123,11 @@ def view_skill_create():
     if request.method == "GET":
         return render_template("skill_create.html")
     elif request.method == "POST":
-        db = get_db()
-        sname = request.form["name"]
-        db.execute(
-            "insert into skill (name) values (?)",
-            (sname,)
-        )
-        db.commit()
+        dbsess = get_session()
+        name = request.form["name"]
+        skill = models.Skill(name=name)
+        dbsess.add(skill)
+        dbsess.commit()
         return render_template("skill_create.html")
 
 
@@ -154,34 +137,30 @@ def view_skill_post():
     if request.method == "GET":
         return render_template("skill_post.html")
     elif request.method == "POST":
-        db = get_db()
-        ptitle = request.form["title"]
-        pbody = request.form["body"]
-        db.execute(
-            "insert into post (author_id, title, body) values (?, ?, ?)",
-            (0, ptitle, pbody)
-        )
-        db.commit()
+        dbsess = get_session()
+        title = request.form["title"]
+        body = request.form["body"]
+        post = models.Post(author_id=0, title=title, body=body)
+        dbsess.add(post)
+        dbsess.commit()
         return render_template("skill_post.html")
 
 
 @login_required
 @bp.route("/skills/link", methods=("GET", "POST"))
 def view_skill_link():
-    db = get_db()
-    posts = db.execute("select * from post")
-    skills = db.execute("select * from skill")
+    dbsess = get_session()
+    posts = dbsess.query(models.Post)
+    skills = dbsess.query(models.Skill)
     if request.method == "GET":
         return render_template("skill_link.html", posts=posts,
                                skills=skills)
     elif request.method == "POST":
         post_id = request.form["post_id"]
         skill_id = request.form["skill_id"]
-        db.execute(
-            "insert into post_skill (post_id, skill_id) values (?, ?)",
-            (post_id, skill_id)
-        )
-        db.commit()
+        postskill = models.PostSkill(post_id=post_id, skill_id=skill_id)
+        dbsess.add(postskill)
+        dbsess.commit()
         return render_template("skill_link.html", posts=posts,
                                skills=skills)
 
