@@ -72,7 +72,13 @@ def create_app(test_config=None):
     def load_user(user_id):
         return get_user_by_id(user_id)
 
-    from . import auth
-    app.register_blueprint(auth.bp)
+    from . import views
+    app.register_blueprint(views.blueprint)
+
+    from .auth.views import blueprint
+    app.register_blueprint(blueprint)
+
+    from .skills.views import blueprint
+    app.register_blueprint(blueprint)
 
     return app
