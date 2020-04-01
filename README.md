@@ -79,7 +79,7 @@ These are my plans for the website versions and a log of past changes:
     + We've got a winner! [Foundation](https://get.foundation/) is like Bootsrap but faster and more
       versatile
 
-0.6.0: Build CLI Tool and use Alchemy
+0.6.0: Build CLI Tool and use Alchemy - done 2020-04-01 10:30
 
   + Create django-style manage.py
   + Switch over to SQLAlchemy
