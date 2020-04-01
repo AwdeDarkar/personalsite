@@ -22,15 +22,7 @@ from flask import Flask
 from sassutils.wsgi import SassMiddleware
 from flask_login import LoginManager
 
-from website.db import get_db
-
-
-def get_user_by_id(user_id):
-    if user_id is None:
-        return None
-    return get_db().execute(
-        'SELECT * FROM user WHERE id = ?', (user_id,)
-    ).fetchone()
+from website.models import User
 
 
 def create_app(test_config=None):
@@ -68,9 +60,7 @@ def create_app(test_config=None):
     login_manager.init_app(app)
     login_manager.login_view = "users.login"
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        return get_user_by_id(user_id)
+    login_manager.user_loader(User.get_by_id)
 
     from . import views
     app.register_blueprint(views.blueprint)
