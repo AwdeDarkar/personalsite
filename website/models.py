@@ -20,6 +20,8 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
+from flask_login import UserMixin
+
 
 Base = declarative_base()
 
@@ -44,7 +46,7 @@ class SiteModel(object):
         return session.query(cls).filter_by(id=object_id).first()
 
 
-class User(SiteModel, Base):
+class User(SiteModel, UserMixin, Base):
     """ Site users, there should only ever by one on this site (me) """
     __tablename__ = "user"
 

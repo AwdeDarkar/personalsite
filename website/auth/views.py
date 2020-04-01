@@ -20,6 +20,7 @@ from flask import (
     render_template, request, g, url_for, session, redirect, flash,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask_login import login_user
 
 from website import models
 from website.db import get_session
@@ -86,6 +87,7 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user.id
+            login_user(user)
             return redirect("/")
 
         flash(error)
