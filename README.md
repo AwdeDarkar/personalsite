@@ -84,7 +84,7 @@ These are my plans for the website versions and a log of past changes:
   + Create django-style manage.py
   + Switch over to SQLAlchemy
 
-0.6.1: Refactor
+0.6.1: Refactor - done 2020-04-01 11:20
 
   + Break each page into its own file
   + Break templates into separate subdirectories
