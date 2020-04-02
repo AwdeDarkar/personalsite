@@ -21,9 +21,58 @@ import os
 from flask import Flask
 from sassutils.wsgi import SassMiddleware
 from flask_login import LoginManager
+from flask_bower import Bower
 
 from website.db import get_session
 from website.models import User
+
+
+def initialize_database(app):
+    """ Perform and needed database initializations """
+    from . import db
+    db.init_app(app)
+    return app
+
+
+def initialize_sass(app):
+    """ Setup the CSS SASS preprocessor """
+    app.wsgi_app = SassMiddleware(app.wsgi_app, {
+       "website": ("static/scss", "static/css", "/static/css"),
+    })
+    return app
+
+
+def initialize_bower(app):
+    """ Initialize the bower front-end package manager """
+    Bower(app)
+    return app
+
+
+def initialize_login(app):
+    """ Initialize the flask login library """
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = "auth.login"
+
+    @login_manager.user_loader
+    def get_user_by_id(user_id):
+        return User.get_by_id(get_session(), user_id)
+
+    return app
+
+
+def initialize_blueprints(app):
+    """ Initialize the subapp URL-mapping blueprints """
+    from . import views
+    app.register_blueprint(views.blueprint)
+
+    from .auth.views import blueprint
+    app.register_blueprint(blueprint)
+
+    from .skills.views import blueprint
+    app.register_blueprint(blueprint)
+
+    return app
 
 
 def create_app(test_config=None):
@@ -44,34 +93,16 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
-    app.wsgi_app = SassMiddleware(app.wsgi_app, {
-       "website": ("static/scss", "static/css", "/static/css"),
-    })
-
     # Ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
 
-    from . import db
-    db.init_app(app)
-
-    login_manager = LoginManager()
-    login_manager.init_app(app)
-    login_manager.login_view = "auth.login"
-
-    @login_manager.user_loader
-    def get_user_by_id(user_id):
-        return User.get_by_id(get_session(), user_id)
-
-    from . import views
-    app.register_blueprint(views.blueprint)
-
-    from .auth.views import blueprint
-    app.register_blueprint(blueprint)
-
-    from .skills.views import blueprint
-    app.register_blueprint(blueprint)
+    app = initialize_database(app)
+    app = initialize_sass(app)
+    app = initialize_bower(app)
+    app = initialize_login(app)
+    app = initialize_blueprints(app)
 
     return app
