@@ -7,14 +7,6 @@ This is is a list of my skills which I have developed enough to be worth adverti
 With each skill, I have created a feed that lists blog posts and projects I have created showcasing
 that skill.
 
-<p>This will die soon
-<ul>
-    <li><a href="/skills/create">Create a skill here</a></li>
-    <li><a href="/skills/post">Create a blog post here</a></li>
-    <li><a href="/skills/link">Link a blog post and skill here</a></li>
-</ul>
-</p>
-
 <ul>
     {% for skill in skills %}
     <li><a href="/skills/filter/{{ skill.name }}">{{ skill.name }}</a></li>

@@ -87,7 +87,7 @@ class Skill(SiteModel, Base):
     """ A skill (collects blog posts) """
     __tablename__ = "skill"
 
-    name = Column(String, nullable=False)
+    name = Column(String, nullable=False, unique=True)
     """ Name of the skill """
 
     posts = relationship("PostSkill", back_populates="skill")
@@ -106,3 +106,17 @@ class PostSkill(SiteModel, Base):
     skill = relationship("Skill", back_populates="posts")
 
     post = relationship("Post", back_populates="skills")
+
+
+class ContactEntry(SiteModel, Base):
+    """ Entry in the contact form """
+    __tablename__ = "contact"
+
+    name = Column(String)
+    """ Name entered into the contact form """
+
+    email = Column(String)
+    """ Email entered into the contact form """
+
+    content = Column(String)
+    """ Text content entered into the contact form """

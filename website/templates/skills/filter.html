@@ -4,9 +4,9 @@
 
 {% block content %}
 <h1>All content with skill {{ skillname }}</h1>
-{% for post in posts %}
-<h2>{{ post.title }}</h2>
-{{ post.body }}
+{% for pskill in postskills %}
+<h2>{{ pskill.post.title }}</h2>
+{{ pskill.post.body }}
 <hr>
 {% endfor %}
 {% endblock %}

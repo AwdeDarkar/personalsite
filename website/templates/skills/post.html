@@ -3,11 +3,26 @@
 {% block title %}Create Blog Post{% endblock %}
 
 {% block content %}
-<form method="POST">
-    <label for="ptitle">Post Title:</label>
-    <input id="ptitle" type="text" name="title"><br>
-    <label for="pbody">Post Body:</label>
-    <input id="pbody" type="text" name="body"><br>
-    <input type="submit">Create</input>
+{% if not current_user.is_authenticated %}
+    <h1>You must <a href="/auth/login">log in</a> to create a post!</h1>
+{% else %}
+<h1>Create a New Post</h1>
+<form id="postform" method="POST">
+    <input id="ptitle" type="text" name="title" placeholder="Title">
+    <hr>
+    <textarea id="pbody" name="body" placeholder="Post content"
+        style="width:100%;height:400px;"></textarea>
+    <hr>
+    <label for="skills">Choose this post's skill associations
+        (<a href="/skills/create">create new</a>)</label>
+    <br>
+    <select id="skills" name="skills" multiple>
+        {% for skill in skills %}
+            <option value="{{ skill.id }}">{{ skill.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <input type="submit" value="Create" />
 </form>
+{% endif %}
 {% endblock %}

@@ -15,12 +15,13 @@ Page views for skills sub-application
 """
 
 from flask import (
-    render_template, request,
+    render_template, request
 )
+from flask_login import login_required
 
 from website import models
 from website.db import get_session
-from website.auth.views import login_required
+from website.auth.views import load_logged_in_user
 from website.skills import blueprint, app_name
 
 
@@ -35,12 +36,12 @@ def view_skills():
 def view_skill_filter(skillname):
     dbsess = get_session()
     skill = dbsess.query(models.Skill).filter_by(name=skillname).first()
-    posts = skill.posts
-    return render_template(f"{app_name}/filter.html", skillname=skillname, posts=posts)
+    postskills = skill.posts
+    return render_template(f"{app_name}/filter.html", skillname=skillname, postskills=postskills)
 
 
-@login_required
 @blueprint.route("/create", methods=("GET", "POST"))
+@login_required
 def view_skill_create():
     if request.method == "GET":
         return render_template(f"{app_name}/create.html")
@@ -53,23 +54,30 @@ def view_skill_create():
         return render_template(f"{app_name}/create.html")
 
 
-@login_required
 @blueprint.route("/post", methods=("GET", "POST"))
+@login_required
 def view_skill_post():
     if request.method == "GET":
-        return render_template(f"{app_name}/post.html")
+        skills = get_session().query(models.Skill).all()
+        return render_template(f"{app_name}/post.html", skills=skills)
     elif request.method == "POST":
         dbsess = get_session()
         title = request.form["title"]
         body = request.form["body"]
+        skills = request.form.getlist("skills")
         post = models.Post(author_id=0, title=title, body=body)
         dbsess.add(post)
         dbsess.commit()
+        print(skills)
+        for skill_id in skills:
+            postskill = models.PostSkill(post_id=post.id, skill_id=skill_id)
+            dbsess.add(postskill)
+            dbsess.commit()
         return render_template(f"{app_name}/post.html")
 
 
-@login_required
 @blueprint.route("/link", methods=("GET", "POST"))
+@login_required
 def view_skill_link():
     dbsess = get_session()
     posts = dbsess.query(models.Post)

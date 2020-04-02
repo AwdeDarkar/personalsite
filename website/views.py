@@ -16,7 +16,13 @@ Root and static page views
     This software is Free and Open Source for any purpose
 """
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
+from flask_login import login_required
+
+from sqlalchemy import desc
+
+from website.models import ContactEntry
+from website.db import get_session
 
 blueprint = Blueprint('root', __name__, url_prefix='/')
 
@@ -36,6 +42,19 @@ def view_about():
     return render_template("about.html")
 
 
-@blueprint.route("/contact")
+@blueprint.route("/messages")
+@login_required
+def view_messages():
+    messages = get_session().query(ContactEntry).order_by(desc(ContactEntry.created_at))
+    return render_template("messages.html", messages=messages)
+
+
+@blueprint.route("/contact", methods=("GET", "POST"))
 def view_contact():
+    if request.method == "POST":
+        message = ContactEntry(name=request.form["name"], email=request.form["email"],
+                               content=request.form["content"])
+        dbsess = get_session()
+        dbsess.add(message)
+        dbsess.commit()
     return render_template("contact.html")

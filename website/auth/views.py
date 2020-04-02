@@ -14,28 +14,16 @@ Page views for auth sub-application
     This software is Free and Open Source for any purpose
 """
 
-import functools
-
 from flask import (
     render_template, request, g, url_for, session, redirect, flash,
 )
+
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required
 
 from website import models
 from website.db import get_session
 from website.auth import blueprint, app_name
-
-
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
-
-        return view(**kwargs)
-
-    return wrapped_view
 
 
 @blueprint.before_app_request
@@ -88,8 +76,17 @@ def login():
             session.clear()
             session['user_id'] = user.id
             login_user(user)
+            if request.args and "next" in request.args:
+                return redirect(request.args.get("next"))
             return redirect("/")
 
         flash(error)
 
     return render_template(f"{app_name}/login.html")
+
+
+@blueprint.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return render_template(f"{app_name}/logout.html")

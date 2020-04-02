@@ -3,5 +3,14 @@
 {% block title %}Contact{% endblock %}
 
 {% block content %}
-You can reach out to me at bcroisdale at gmail.com.
+You can reach out to me at bcroisdale at gmail.com or by filling out the form below,
+
+<hr>
+<form id="contactform" method="POST">
+    <input name="name" type="text" placeholder="Name"></input><br><br>
+    <input name="email" type="text" placeholder="Email"></input><br><br>
+    <textarea name="content" placeholder="Your message here"
+        style="width:60%;height:160px;"></textarea><br>
+    <input type="submit" value="Send"></input>
+</form>
 {% endblock %}
