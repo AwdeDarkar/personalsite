@@ -91,7 +91,7 @@ These are my plans for the website versions and a log of past changes:
   + Reorganize 'blueprints' and urls
   + Clean up testing code
 
-0.6.2: Auth and Controls
+0.6.2: Auth and Controls - done 2020-04-02 09:52
 
   + Build a user authentication system
   + Lock the skills setup behind that system
