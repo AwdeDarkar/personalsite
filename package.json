@@ -1,9 +1,13 @@
 {
   "name": "personal-site",
-  "version": "0.6.2",
+  "version": "0.7.2",
   "description": "Ben Croisdale's Personal Website ================================",
   "main": "index.js",
+  "watch": {
+    "dev": "website/src/*.ts"
+  },
   "scripts": {
+    "watch": "npm-watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
     "dev": "webpack --mode development"
@@ -12,10 +16,14 @@
   "author": "Ben Croisdale",
   "license": "ISC",
   "devDependencies": {
+    "@types/lodash": "^4.14.149",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "npm-watch": "^0.6.0"
   }
 }

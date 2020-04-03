@@ -21,7 +21,6 @@ import os
 from flask import Flask
 from sassutils.wsgi import SassMiddleware
 from flask_login import LoginManager
-from flask_bower import Bower
 
 from website.db import get_session
 from website.models import User
@@ -39,12 +38,6 @@ def initialize_sass(app):
     app.wsgi_app = SassMiddleware(app.wsgi_app, {
        "website": ("static/scss", "static/css", "/static/css"),
     })
-    return app
-
-
-def initialize_bower(app):
-    """ Initialize the bower front-end package manager """
-    Bower(app)
     return app
 
 
@@ -101,7 +94,6 @@ def create_app(test_config=None):
 
     app = initialize_database(app)
     app = initialize_sass(app)
-    app = initialize_bower(app)
     app = initialize_login(app)
     app = initialize_blueprints(app)
 

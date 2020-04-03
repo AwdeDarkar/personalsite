@@ -8,3 +8,6 @@ __pycache__/
 
 # Styling
 website/static/css/
+
+# npm
+node_modules/
