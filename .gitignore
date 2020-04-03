@@ -11,3 +11,4 @@ website/static/css/
 
 # npm
 node_modules/
+website/static/bundle.js
