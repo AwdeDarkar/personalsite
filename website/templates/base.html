@@ -4,6 +4,8 @@
     <title>{% block title %}{% endblock %} - Ben Croisdale</title>
     <link href="https://fonts.googleapis.com/css?family=PT+Mono|PT+Sans|PT+Sans+Caption|PT+Sans+Narrow|PT+Serif&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.scss.css') }}">
+    <script src="/node/react/umd/react.development.js"></script>
+    <script src="/node/react-dom/umd/react-dom.development.js"></script>
 </head>
 <body>
     <div class="header">
@@ -35,6 +37,7 @@
   {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
   {% endfor %}
+  <div id="example"></div>
   {% block content %}{% endblock %}
 </div>
 <footer>

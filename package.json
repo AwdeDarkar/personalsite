@@ -2,12 +2,16 @@
   "name": "personal-site",
   "version": "0.7.2",
   "description": "Ben Croisdale's Personal Website ================================",
-  "main": "index.js",
+  "main": "test.jsx",
   "watch": {
-    "dev": "website/src/*.ts"
+    "dev": {
+        "patterns": [ "website/src" ],
+        "extensions": "ts,tsx",
+        "quiet": false
+    }
   },
   "scripts": {
-    "watch": "npm-watch",
+    "watch": "npm-watch dev",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
     "dev": "webpack --mode development"
@@ -17,6 +21,9 @@
   "license": "ISC",
   "devDependencies": {
     "@types/lodash": "^4.14.149",
+    "@types/react": "^16.9.32",
+    "@types/react-dom": "^16.9.6",
+    "source-map-loader": "^0.2.4",
     "ts-loader": "^6.2.2",
     "typescript": "^3.8.3",
     "webpack": "^4.42.1",
@@ -24,6 +31,11 @@
   },
   "dependencies": {
     "lodash": "^4.17.15",
-    "npm-watch": "^0.6.0"
+    "npm-watch": "^0.6.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "resolutions": {
+    "@types/react": "16.7.18"
   }
 }

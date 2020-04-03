@@ -16,7 +16,7 @@ Root and static page views
     This software is Free and Open Source for any purpose
 """
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, send_from_directory
 from flask_login import login_required
 
 from sqlalchemy import desc
@@ -30,6 +30,12 @@ blueprint = Blueprint('root', __name__, url_prefix='/')
 @blueprint.route("/", methods=("GET",))
 def view_home():
     return render_template("home.html")
+
+
+@blueprint.route("/node/<path:path>")
+def view_node_modules(path):
+    """ This is clunky and bad; I need it to serve React but come up with a better solution soon """
+    return send_from_directory("../node_modules", path)
 
 
 @blueprint.route("/predictions")
