@@ -103,7 +103,7 @@ These are my plans for the website versions and a log of past changes:
   + Setup NPM to work with flask
   + Use webpack to deliver script ("bundle.js")
 
-0.7.1: Javascript
+0.7.1: Javascript - 2020-04-03 19:06
 
   + Setup typescript to work with flask
   + Setup react.js to work with flask
