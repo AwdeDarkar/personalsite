@@ -100,7 +100,7 @@ These are my plans for the website versions and a log of past changes:
 
 0.7.0: Basic Frameworks
 
-  + Setup bower to work with flask
+  + Setup NPM to work with flask
 
 0.7.1: Javascript
 
