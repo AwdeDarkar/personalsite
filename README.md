@@ -98,9 +98,10 @@ These are my plans for the website versions and a log of past changes:
   + Make the skill management less evil
   + Add basic contact form
 
-0.7.0: Basic Frameworks
+0.7.0: Basic Frameworks - done 2020-04-03 09:24
 
   + Setup NPM to work with flask
+  + Use webpack to deliver script ("bundle.js")
 
 0.7.1: Javascript
 
