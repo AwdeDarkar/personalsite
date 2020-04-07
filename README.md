@@ -114,7 +114,7 @@ These are my plans for the website versions and a log of past changes:
 
   + Setup foundation to work with flask
 
-0.8.0: More Database
+0.8.0: More Database - done 2020-04-07 17:02
 
   + Add migrations support
 
