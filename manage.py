@@ -23,15 +23,10 @@ import os
 
 def reset_db():
     """ Create a new sqlite database """
-    from sqlalchemy import create_engine
-    from website import models
     if os.path.exists("instance/development.db.sqlite3"):
         print("Existing database found, deleting it")
         os.remove("instance/development.db.sqlite3")
-    engine = create_engine("sqlite:///instance/development.db.sqlite3", echo=True)
-    print("Created database file; building tables")
-    models.Base.metadata.create_all(engine)
-    print("Built tables; database is reset")
+    migrate_db()
 
 
 def migrate_db():
@@ -55,6 +50,7 @@ def make_migrations_db(message):
     alembic_args = [
             "--raiseerr",
             "revision",
+            "--autogenerate",
             "-m",
             f"\"{message}\"",
     ]

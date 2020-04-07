@@ -16,7 +16,7 @@ SQLAlchemy Models
 
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -55,6 +55,9 @@ class User(SiteModel, UserMixin, Base):
 
     password = Column(String, nullable=False)
     """ The user's hashed password """
+
+    admin = Column(Boolean, default=True)
+    """ Is this user an administrator? """
 
     posts = relationship("Post", back_populates="author")
 

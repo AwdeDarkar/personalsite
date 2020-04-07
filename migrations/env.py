@@ -7,6 +7,7 @@ from alembic import context
 
 from website.db import get_engine
 from website.models import Base
+from website.models import SiteModel, Post, Skill, PostSkill, User, ContactEntry
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
