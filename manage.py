@@ -34,15 +34,50 @@ def reset_db():
     print("Built tables; database is reset")
 
 
+def migrate_db():
+    """ Migrate the database """
+    from alembic import config
+    print("Beginning Alembic migration")
+    alembic_args = [
+            "--raiseerr",
+            "upgrade",
+            "head"
+    ]
+
+    config.main(argv=alembic_args)
+    print("Migration complete")
+
+
+def make_migrations_db(message):
+    """ Migrate the database """
+    from alembic import config
+    print("Making Alembic migrations")
+    alembic_args = [
+            "--raiseerr",
+            "revision",
+            "-m",
+            f"\"{message}\"",
+    ]
+
+    config.main(argv=alembic_args)
+    print("Migrations created")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Management tool for my personal website")
     parser.add_argument("action", type=str, nargs=1,
                         help="Action to perform")
+    parser.add_argument("-m", type=str, nargs=1, dest="message",
+                        help="Optional message", default="nomessage")
 
     args = parser.parse_args()
     args.action = args.action[0]
 
     if args.action == "reset":
         reset_db()
+    elif args.action == "migrate":
+        migrate_db()
+    elif args.action == "makemigrations":
+        make_migrations_db(args.message)
     else:
         print(f"Action '{args.action}' not recognized")

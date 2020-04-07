@@ -9,8 +9,6 @@ Adapted from <https://flask.palletsprojects.com/en/1.1.x/tutorial/database/>
 
 **Created**
     2020-03-23
-**Updated**
-    2020-03-23 by Ben Croisdale
 **Author**
     Ben Croisdale
 **Copyright**
@@ -25,9 +23,15 @@ from flask import current_app, g
 
 def get_engine():
     """ Get the SQLAlchemy engine connected to the database """
-    if "engine" not in g:
-        g.engine = create_engine("sqlite:///" + current_app.config["DATABASE"])
-    return g.engine
+    try:
+        if "engine" not in g:
+            g.engine = create_engine("sqlite:///" + current_app.config["DATABASE"])
+        return g.engine
+    except RuntimeError:
+        from website import CONFIG
+        uri = "sqlite:///" + CONFIG["DATABASE"]["path"]
+        print(f"Connecting to {uri}")
+        return create_engine(uri)
 
 
 def get_session():

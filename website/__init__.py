@@ -25,6 +25,13 @@ from website.db import get_session
 from website.models import User
 
 
+CONFIG = {
+    "DATABASE": {
+        "path": os.path.join("instance", "development.db.sqlite3"),
+    }
+}
+
+
 def initialize_database(app):
     """ Perform and needed database initializations """
     from . import db
@@ -68,8 +75,7 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="dev",
-        DATABASE=os.path.join(app.instance_path, "development.db.sqlite3"),
-        SQLALCHEMY_DATABASE_URI=os.path.join(app.instance_path, "alchemy.db.sqlite3"),
+        DATABASE=CONFIG["DATABASE"]["path"],
     )
 
     if not test_config:
