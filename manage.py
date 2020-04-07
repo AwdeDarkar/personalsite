@@ -59,6 +59,16 @@ def make_migrations_db(message):
     print("Migrations created")
 
 
+def run_server():
+    """ Run the application server """
+    from website import create_app
+    app = create_app()
+    app.run(
+        host=os.getenv("FLASK_HOST", "127.0.0.1"),
+        port=os.getenv("FLASK_PORT", 5000),
+    )
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Management tool for my personal website")
     parser.add_argument("action", type=str, nargs=1,
@@ -75,5 +85,7 @@ if __name__ == "__main__":
         migrate_db()
     elif args.action == "makemigrations":
         make_migrations_db(args.message)
+    elif args.action == "run":
+        run_server()
     else:
         print(f"Action '{args.action}' not recognized")

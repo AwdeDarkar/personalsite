@@ -12,3 +12,6 @@ website/static/styles.css
 # npm
 node_modules/
 website/static/bundle.js
+
+# secret vars
+*_env
