@@ -7,7 +7,7 @@ __pycache__/
 *.db.*
 
 # Styling
-website/static/css/
+website/static/styles.css
 
 # npm
 node_modules/

@@ -5,9 +5,12 @@
   "main": "test.jsx",
   "watch": {
     "dev": {
-        "patterns": [ "website/src" ],
-        "extensions": "ts,tsx",
-        "quiet": false
+      "patterns": [
+        "website/src",
+        "website/static/scss"
+      ],
+      "extensions": "ts,tsx,scss",
+      "quiet": false
     }
   },
   "scripts": {
@@ -23,6 +26,12 @@
     "@types/lodash": "^4.14.149",
     "@types/react": "^16.9.32",
     "@types/react-dom": "^16.9.6",
+    "css-loader": "^3.5.1",
+    "grunt": "^1.1.0",
+    "grunt-sass": "^3.1.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^8.0.2",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^6.2.2",
     "typescript": "^3.8.3",
@@ -30,10 +39,13 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "foundation-sites": "^6.6.2",
+    "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "npm-watch": "^0.6.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "what-input": "^5.2.7"
   },
   "resolutions": {
     "@types/react": "16.7.18"

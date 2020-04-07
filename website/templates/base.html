@@ -3,9 +3,11 @@
 <head>
     <title>{% block title %}{% endblock %} - Ben Croisdale</title>
     <link href="https://fonts.googleapis.com/css?family=PT+Mono|PT+Sans|PT+Sans+Caption|PT+Sans+Narrow|PT+Serif&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.scss.css') }}">
+    <link src="/node/foundation-sites/dist/css/foundation.css"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="/node/react/umd/react.development.js"></script>
     <script src="/node/react-dom/umd/react-dom.development.js"></script>
+    <script src="/node/jquery/dist/jquery.js"></script>
 </head>
 <body>
     <div class="header">
@@ -41,6 +43,10 @@
   {% block content %}{% endblock %}
 </div>
 <footer>
+    <script src="/node/foundation-sites/dist/js/foundation.min.js"></script>
+    <script>
+        $(document).foundation();
+    </script>
     <script src="{{ url_for('static', filename='bundle.js') }}"></script>
 </footer>
 </html>

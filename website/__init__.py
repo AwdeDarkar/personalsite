@@ -93,7 +93,7 @@ def create_app(test_config=None):
         pass
 
     app = initialize_database(app)
-    app = initialize_sass(app)
+    #app = initialize_sass(app)
     app = initialize_login(app)
     app = initialize_blueprints(app)
 

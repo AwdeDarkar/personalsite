@@ -112,11 +112,24 @@ These are my plans for the website versions and a log of past changes:
 
   + Setup foundation to work with flask
 
-0.8: Prehosting
+0.8.0: More Database
+
+  + Add migrations support
+
+0.9.0: Prehosting
 
   + Dockerize
+
+0.9.1: Security
+
   + Extract private information into environment vars
   + Careful security check, go through a checklist
+
+0.9.2: Documentation
+
+  + Document everything carefully
+  + Use a tool to compile the documentation to HTML and host it in static
+    + Probably add this to the build path
 
 1.0: Hosting and Public Release
 
