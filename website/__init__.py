@@ -19,7 +19,6 @@ This script creates the flask application.
 import os
 
 from flask import Flask
-from sassutils.wsgi import SassMiddleware
 from flask_login import LoginManager
 
 from website.db import get_session
@@ -30,14 +29,6 @@ def initialize_database(app):
     """ Perform and needed database initializations """
     from . import db
     db.init_app(app)
-    return app
-
-
-def initialize_sass(app):
-    """ Setup the CSS SASS preprocessor """
-    app.wsgi_app = SassMiddleware(app.wsgi_app, {
-       "website": ("static/scss", "static/css", "/static/css"),
-    })
     return app
 
 
@@ -93,7 +84,6 @@ def create_app(test_config=None):
         pass
 
     app = initialize_database(app)
-    #app = initialize_sass(app)
     app = initialize_login(app)
     app = initialize_blueprints(app)
 
