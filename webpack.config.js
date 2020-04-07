@@ -10,24 +10,41 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.scss$/,
-                loader: [
-                    MiniCssExtractPlugin.loader,
+                test: /\.s(c|a)ss$/,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
                     {
                         loader: "css-loader",
                         options: {
                             modules: true,
-                            sourceMap: true
+                            sourceMap: true,
+                            modules: {
+                                localIdentName: "[local]"
+                            }
+                        },
+                    },
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            sourceMap: true,
+                            config: {
+                                path: "postcss.config.js"
+                            },
                         }
                     },
                     {
                         loader: "sass-loader",
                         options: {
-                            sourceMap: true
+                            sourceMap: true,
                         }
                     }
                 ],
-                exclude: /node_modules/,
+                include: [
+                    path.resolve(__dirname, "node_modules/foundation-sites/scss/foundation"),
+                    path.resolve(__dirname, "website/src/scss"),
+                ]
             },
             {
                 test: /\.ts(x?)$/,
