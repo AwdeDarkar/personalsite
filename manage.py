@@ -64,7 +64,7 @@ def run_server():
     from website import create_app
     app = create_app()
     app.run(
-        host=os.getenv("FLASK_HOST", "127.0.0.1"),
+        host=os.getenv("FLASK_HOST", "0.0.0.0"),
         port=os.getenv("FLASK_PORT", 5000),
     )
 

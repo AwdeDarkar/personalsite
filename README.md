@@ -118,7 +118,7 @@ These are my plans for the website versions and a log of past changes:
 
   + Add migrations support
 
-0.9.0: Prehosting
+0.9.0: Prehosting - done 2020-04-08 12:19
 
   + Dockerize
 
