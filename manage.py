@@ -19,6 +19,12 @@ Person website management script
 
 import argparse
 import os
+from getpass import getpass
+
+from werkzeug.security import generate_password_hash
+
+from website.db import get_session
+from website.models import User
 
 
 def reset_db():
@@ -69,6 +75,17 @@ def run_server():
     )
 
 
+def insert_user():
+    """ Create a new admin user """
+    dbsess = get_session()
+    username = input("Enter the admin username [default 'admin']: ") or "admin"
+    user = User(username=username, password=generate_password_hash(getpass()))
+    user.admin = True
+    dbsess.add(user)
+    dbsess.commit()
+    print(f"Created admin user '{username}'")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Management tool for my personal website")
     parser.add_argument("action", type=str, nargs=1,
@@ -87,5 +104,7 @@ if __name__ == "__main__":
         make_migrations_db(args.message)
     elif args.action == "run":
         run_server()
+    elif args.action == "createadmin":
+        insert_user()
     else:
         print(f"Action '{args.action}' not recognized")

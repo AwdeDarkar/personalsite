@@ -32,32 +32,6 @@ def load_logged_in_user():
     g.user = models.User.get_by_id(get_session(), user_id)
 
 
-@blueprint.route("/register", methods=("GET", "POST"))
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        dbsess = get_session()
-        error = None
-
-        if not username:
-            error = "Username is required."
-        elif not password:
-            error = "Password is required."
-        elif models.User.get_by_name(dbsess, username) is not None:
-            error = f"User {username} is already registered."
-
-        if error is None:
-            user = models.User(username=username, password=generate_password_hash(password))
-            dbsess.add(user)
-            dbsess.commit()
-            return redirect(url_for('auth.login'))
-
-        flash(error)
-
-    return render_template(f"{app_name}/register.html")
-
-
 @blueprint.route('/login', methods=("GET", "POST"))
 def login():
     if request.method == 'POST':

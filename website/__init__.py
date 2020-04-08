@@ -73,10 +73,12 @@ def create_app(test_config=None):
     """
 
     app = Flask(__name__, instance_relative_config=True)
+    if not os.getenv("FLASK_SECRET"):
+        raise Exception("Flask secret key must be explicitly set as an environment variable")
     app.config.from_mapping(
-        SECRET_KEY=os.getenv("FLASK_SECRET", "dev"),
+        SECRET_KEY=os.getenv("FLASK_SECRET"),
         DATABASE=CONFIG["DATABASE"]["path"],
-        DEBUG=os.getenv("FLASK_DEBUG", True),
+        DEBUG=os.getenv("FLASK_DEBUG", False),
     )
 
     if not test_config:

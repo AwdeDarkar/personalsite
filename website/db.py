@@ -36,9 +36,12 @@ def get_engine():
 
 def get_session():
     """ Get a fresh alchemy database session """
-    if "Session" not in g:
-        g.Session = sessionmaker(bind=get_engine())
-    return g.Session()
+    try:
+        if "Session" not in g:
+            g.Session = sessionmaker(bind=get_engine())
+        return g.Session()
+    except RuntimeError:
+        return sessionmaker(bind=get_engine())()
 
 
 def init_app(app):

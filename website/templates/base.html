@@ -20,7 +20,6 @@
                 <li><a href="/contact">Contact</a></li>
                 {% if not current_user.is_authenticated %}
                     <li><a href="/auth/login">Log In</a></li>
-                    <li><a href="/auth/register">Register</a></li>
                 {% else %}
                     <li><a href="/messages">View Messages</a></li>
                     <li><a href="/skills/post">New Post</a></li>

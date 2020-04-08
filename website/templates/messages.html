@@ -7,7 +7,7 @@ All messages entered on my contact form.
 
 {% for message in messages %}
     <div>
-        <h3>{{ message.name }} (<a href="mailto:{{ message.email }}">{{ message.email }}</a>)</h3>
+        <h3>{{ message.name }} {{ message.email }}</h3>
         <h4>at {{ message.created_at }}</h4>
         <p>{{ message.content }}</p>
         <hr>
