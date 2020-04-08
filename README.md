@@ -122,7 +122,7 @@ These are my plans for the website versions and a log of past changes:
 
   + Dockerize
 
-0.9.1: Security
+0.9.1: Security - done 2020-04-08 17:33
 
   + Extract private information into environment vars
   + Careful security check, go through a checklist
