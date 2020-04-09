@@ -130,8 +130,12 @@ These are my plans for the website versions and a log of past changes:
 0.9.2: Documentation - done 2020-04-09 16:35
 
   + Document everything carefully
-  + Use a tool to compile the documentation to HTML and host it in static
-    + Probably add this to the build path
+
+0.9.3: Production Setup
+
+  + Create production-ready dockerfile
+    + With nginx and gunicorn
+  + Add support for postgresql backend (and generally, for modular db backends)
 
 1.0: Hosting and Public Release
 
