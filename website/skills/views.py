@@ -79,6 +79,7 @@ def view_skill_post():
 @blueprint.route("/link", methods=("GET", "POST"))
 @login_required
 def view_skill_link():
+    """ This is unused and should probably be reviewed; the post page manages these links now """
     dbsess = get_session()
     posts = dbsess.query(models.Post)
     skills = dbsess.query(models.Skill)

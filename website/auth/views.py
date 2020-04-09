@@ -28,12 +28,20 @@ from website.auth import blueprint, app_name
 
 @blueprint.before_app_request
 def load_logged_in_user():
+    """
+    Bit of a tricky name collision here: `session` refers to the user's browser session storage,
+    while `get_session` returns the alchemy session for getting the user object from the database.
+    """
     user_id = session.get('user_id')
     g.user = models.User.get_by_id(get_session(), user_id)
 
 
 @blueprint.route('/login', methods=("GET", "POST"))
 def login():
+    """
+    View for logging in the user; this endpoint handles both the login page (via the GET request)
+    and the actual login check and session setup.
+    """
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -62,5 +70,6 @@ def login():
 @blueprint.route('/logout')
 @login_required
 def logout():
+    """ Simply loading the logout page while logged in will log the user out """
     logout_user()
     return render_template(f"{app_name}/logout.html")
