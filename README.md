@@ -127,7 +127,7 @@ These are my plans for the website versions and a log of past changes:
   + Extract private information into environment vars
   + Careful security check, go through a checklist
 
-0.9.2: Documentation
+0.9.2: Documentation - done 2020-04-09 16:35
 
   + Document everything carefully
   + Use a tool to compile the documentation to HTML and host it in static
