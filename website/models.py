@@ -2,7 +2,12 @@
 models
 ====================================================================================================
 
-SQLAlchemy Models
+I use [SQLAlchemy](https://www.sqlalchemy.org/) to manage my database models. ORM is something I do
+not consider optional in a web application.
+
+Because this website is relatively database-light, I have models for all the both of my applications
+in here. If this gets to be over 500 or 600 lines I will probably refactor into the subapps kinda
+like django does by default.
 
 ----------------------------------------------------------------------------------------------------
 
@@ -23,11 +28,15 @@ from sqlalchemy.ext.declarative import declarative_base
 from flask_login import UserMixin
 
 
+# This object acts to accumulate the models we define in this module
 Base = declarative_base()
 
 
 class SiteModel(object):
-    """ Abstract site model mixin to manage common operations """
+    """
+    I was a bit shocked this wasn't default in SQLAlchemy, but it wasn't to hard to define on my
+    own; it basically just ensures every object has a unique int id and a creation and update time.
+    """
 
     id = Column(Integer, primary_key=True)
     """ Primary key integer ID """
@@ -69,7 +78,11 @@ class User(SiteModel, UserMixin, Base):
 
 
 class Post(SiteModel, Base):
-    """ A blog post """
+    """
+    These are the posts in my 'skills and project' blog. For now the string is raw, but I may add a
+    field to allow the post to identify itself as markdown or html or maybe something else I
+    construct (probably a custom markdown extension)
+    """
     __tablename__ = "post"
 
     title = Column(String, nullable=False)
@@ -87,7 +100,14 @@ class Post(SiteModel, Base):
 
 
 class Skill(SiteModel, Base):
-    """ A skill (collects blog posts) """
+    """
+    'Skills' are basically tags, but with a specific idiomatic meaning: the whole point of this is
+    that I can write things that will display my skills in an area and someone can just click on a
+    skill and see all the stuff I've done with it.
+
+    Future extensions probably include some way to indicate my subjective confidence in a skill, I
+    may want to display things I'm still learning or things I haven't quite mastered.
+    """
     __tablename__ = "skill"
 
     name = Column(String, nullable=False, unique=True)
@@ -97,7 +117,7 @@ class Skill(SiteModel, Base):
 
 
 class PostSkill(SiteModel, Base):
-    """ Many to Many table """
+    """ Many to Many table joining skills and posts """
     __tablename__ = "post_skill"
 
     post_id = Column(Integer, ForeignKey("post.id"), nullable=False)
@@ -112,7 +132,7 @@ class PostSkill(SiteModel, Base):
 
 
 class ContactEntry(SiteModel, Base):
-    """ Entry in the contact form """
+    """ Entry in the contact-me form """
     __tablename__ = "contact"
 
     name = Column(String)

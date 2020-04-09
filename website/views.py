@@ -2,7 +2,7 @@
 root views
 ====================================================================================================
 
-Root and static page views
+These are the views for the main, mostly static, site pages.
 
 ----------------------------------------------------------------------------------------------------
 
@@ -57,6 +57,10 @@ def view_messages():
 
 @blueprint.route("/contact", methods=("GET", "POST"))
 def view_contact():
+    """
+    This is the only top-level view that does anything interesting: just a simple form to dump
+    messages into my database
+    """
     if request.method == "POST":
         message = ContactEntry(name=request.form["name"], email=request.form["email"],
                                content=request.form["content"])

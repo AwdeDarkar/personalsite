@@ -22,7 +22,16 @@ from flask import current_app, g
 
 
 def get_engine():
-    """ Get the SQLAlchemy engine connected to the database """
+    """
+    Get the SQLAlchemy engine connected to the database.
+    This has two formats, if we are currently inside an application then we use the app context to
+    make the engine and avoid repeated connections when an already existing one is present.
+
+    Outside an application context, the reference to `g` and `current_app` will raise a
+    RuntimeError; if that happens we just create a new connection to the database ourselves. This
+    makes it easy for scripts (like `manage.py`) to work with the database without having to start
+    up the whole application first.
+    """
     try:
         if "engine" not in g:
             g.engine = create_engine("sqlite:///" + current_app.config["DATABASE"])
@@ -35,7 +44,18 @@ def get_engine():
 
 
 def get_session():
-    """ Get a fresh alchemy database session """
+    """
+    Typically, alchemy sessions are more useful than engines. While there are a few cases where you
+    want an engine and not a session, if all you're doing is working with your defined models then
+    the session is what will let you actually do that.
+
+    SQLAlchemy uses a `sessionmaker` function which you pass your engine to and it will create a
+    class (or just function?) that, when instantiated, generates the actual session object itself.
+    Hence why the result needs to be called.
+
+    This, like `get_engine`, can safely fallback to a non-flask-app version outside the flask
+    application context.
+    """
     try:
         if "Session" not in g:
             g.Session = sessionmaker(bind=get_engine())
