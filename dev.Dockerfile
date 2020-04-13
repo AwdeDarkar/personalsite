@@ -21,31 +21,33 @@ COPY package*.json /app/
 
 WORKDIR /app
 
-RUN echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list
-RUN wget https://nginx.org/keys/nginx_signing.key -O - | apt-key add -
-RUN apk add --no-cache nginx=$NGINX_VERSION \
-                       supervisor=$SUPERVISOR_VERSION \
-&& rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache nginx supervisor
+RUN rm -rf /var/lib/apt/lists/*
 
 # Install python modules
 RUN pip3 install --no-cache-dir -r requirements.txt
-RUN pip3 install gunicorn==$GUNICORN_VERSION gevent==$GEVENT_VERSION
+RUN pip3 install --no-cache-dir gunicorn==$GUNICORN_VERSION
 
 # Install node modules
 RUN npm install
 
 # Copy files to the right locations
 COPY . /app
-COPY production/nginx.conf /etc/nginx/conf.d/nginx.conf
-COPY production/mime.types /etc/nginx/conf.d/conf/mime.types
-COPY production/proxy.conf /etc/nginx/proxy.conf
-COPY production/fastcgi.conf /etc/nginx/fastcgi.conf
+COPY production/nginx.conf /etc/nginx/nginx.conf
+COPY production/supervisord.conf /etc/supervisord/conf.d/supervisord.conf
+COPY production/mime.types /etc/nginx/conf.d/mime.types
+#COPY production/proxy.conf /etc/nginx/proxy.conf
+#COPY production/fastcgi.conf /etc/nginx/fastcgi.conf
 COPY production/gunicorn.config.py /app/gunicorn.config.py
-COPY ./website/static /static
-COPY ./node_modules /node
+COPY ./node_modules /var/www/node
+
+# Make log directories
+RUN mkdir /var/log/gunicorn
+RUN mkdir /var/log/supervisord
 
 # Build frontend
 RUN npm run dev
+COPY ./website/static /var/www/static
 
 # Configure Nginx
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
@@ -54,4 +56,3 @@ RUN rm /etc/nginx/conf.d/default.conf
 EXPOSE 5000
 
 CMD ./entry.sh dev
-CMD python3 manage.py run

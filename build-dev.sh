@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker build -f Dockerfile-dev -t personalsitedev .
+docker build -f dev.Dockerfile -t personalsitedev .

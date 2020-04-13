@@ -18,7 +18,7 @@ Based on <https://github.com/benoitc/gunicorn/blob/master/examples/example_confi
 bind = "127.0.0.1:8000"
 backlog = 128
 
-workers = 1
+workers = 4
 worker_class = 'sync'
 worker_connections = 1000
 timeout = 30
@@ -32,6 +32,7 @@ user = None
 group = None
 tmp_upload_dir = None
 
+logfile = "/var/log/gunicorn/standard.log"
 errorlog = '-'
 loglevel = 'info'
 accesslog = '-'
