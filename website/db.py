@@ -21,6 +21,22 @@ from sqlalchemy.orm import sessionmaker
 from flask import current_app, g
 
 
+def _load_engine_backend(config):
+    """ Load a supported backend from the engine config """
+    if "active" not in config:
+        raise Exception("Database config must specify an active backend!")
+    active = config["active"]
+    config = config[active]
+    if active == "SQLITE":
+        return create_engine("sqlite:///" + config["path"])
+    if active == "POSTGRES":
+        return create_engine(
+                f"{config['dialect']}+{config['driver']}://"
+                + f"{config['username']}:{config['password']}@"
+                + f"{config['hostname']}:{config['hostport']}/{config['database']}")
+    raise Exception(f"Unsupported backend '{active}'")
+
+
 def get_engine():
     """
     Get the SQLAlchemy engine connected to the database.
@@ -34,13 +50,11 @@ def get_engine():
     """
     try:
         if "engine" not in g:
-            g.engine = create_engine("sqlite:///" + current_app.config["DATABASE"])
+            g.engine = _load_engine_backend(current_app.config["DATABASE"])
         return g.engine
     except RuntimeError:
         from website import CONFIG
-        uri = "sqlite:///" + CONFIG["DATABASE"]["path"]
-        print(f"Connecting to {uri}")
-        return create_engine(uri)
+        return _load_engine_backend(CONFIG["DATABASE"])
 
 
 def get_session():

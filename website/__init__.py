@@ -28,7 +28,19 @@ from website.models import User
 # it.
 CONFIG = {
     "DATABASE": {
-        "path": os.path.join("instance", "development.db.sqlite3"),
+        "active": os.getenv("FLASK_DATABASE_TYPE", "SQLITE"),
+        "SQLITE": {
+            "path": os.path.join("instance", "development.db.sqlite3"),
+        },
+        "SERVER": {
+            "dialect": "postgresql",
+            "driver": "psycopg2",
+            "username": os.getenv("FLASK_DATABASE_USER"),
+            "password": os.getenv("FLASK_DATABASE_PASS"),
+            "hostname": os.getenv("FLASK_DATABASE_HOST"),
+            "hostport": os.getenv("FLASK_DATABASE_PORT"),
+            "database": os.getenv("FLASK_DATABASE_NAME"),
+        },
     }
 }
 
@@ -91,7 +103,7 @@ def create_app(test_config=None):
         raise Exception("Flask secret key must be explicitly set as an environment variable")
     app.config.from_mapping(
         SECRET_KEY=os.getenv("FLASK_SECRET"),
-        DATABASE=CONFIG["DATABASE"]["path"],
+        DATABASE=CONFIG["DATABASE"],
         DEBUG=os.getenv("FLASK_DEBUG", False),
     )
 
