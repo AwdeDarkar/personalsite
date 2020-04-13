@@ -135,6 +135,8 @@ These are my plans for the website versions and a log of past changes:
 
   + Create production-ready dockerfile
     + With nginx and gunicorn
+
+0.9.4: Production Database
   + Add support for postgresql backend (and generally, for modular db backends)
 
 1.0: Hosting and Public Release
