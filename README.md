@@ -131,7 +131,7 @@ These are my plans for the website versions and a log of past changes:
 
   + Document everything carefully
 
-0.9.3: Production Setup
+0.9.3: Production Setup - done 2020-04-13 18:39
 
   + Create production-ready dockerfile
     + With nginx and gunicorn
