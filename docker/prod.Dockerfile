@@ -46,7 +46,7 @@ RUN mkdir /var/log/gunicorn
 RUN mkdir /var/log/supervisord
 
 # Build frontend
-RUN npm run dev
+RUN npm run build
 COPY ./website/static /var/www/static
 
 # Configure Nginx
@@ -55,4 +55,4 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 EXPOSE 5000
 
-CMD ./docker/entry.sh dev
+CMD ./docker/entry.sh prod
