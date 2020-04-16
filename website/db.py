@@ -29,7 +29,7 @@ def _load_engine_backend(config):
     config = config[active]
     if active == "SQLITE":
         return create_engine("sqlite:///" + config["path"])
-    if active == "POSTGRES":
+    if active == "SERVER":
         return create_engine(
                 f"{config['dialect']}+{config['driver']}://"
                 + f"{config['username']}:{config['password']}@"
