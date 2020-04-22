@@ -53,7 +53,7 @@ RUN mkdir /var/log/supervisord
 
 # Build frontend
 RUN npm run build
-COPY ./website/static /var/www/static
+RUN cp -r ./website/static /var/www/static
 
 # Configure Nginx
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
