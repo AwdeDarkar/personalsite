@@ -10,19 +10,22 @@
 <form id="postform" method="POST">
     <input id="ptitle" type="text" name="title" placeholder="Title">
     <hr>
-    <textarea id="pbody" name="body" placeholder="Post content"
-        style="width:100%;height:400px;"></textarea>
+    <div class="grid-x grid-padding-x">
+        <div class="cell small-6">
+        <textarea id="pbody" name="body" placeholder="Post content"
+            style="width:100%;height:400px;"></textarea>
+        </div>
+        <div id="rendered-post" class="cell small-6">Rendered</div>
+    </div>
     <hr>
     <label for="skills">Choose this post's skill associations
-        (<a href="/skills/create">create new</a>)</label>
-    <br>
+        (or <a href="/skills/create">create a new skill</a>)</label>
     <select id="skills" name="skills" multiple>
         {% for skill in skills %}
             <option value="{{ skill.id }}">{{ skill.name }}</option>
         {% endfor %}
     </select>
-    <br>
-    <input type="submit" value="Create" />
+    <input type="submit" class="success button" value="Create" />
 </form>
 {% endif %}
 {% endblock %}
