@@ -93,7 +93,7 @@ are just plans, though, and can change at any time.
 
   + Add support for postgresql backend (and generally, for modular db backends)
 
-0.9.5: Deploy Production
+0.9.5: Deploy Production - done 2020-04-24 11:54
 
   + Deploy to AWS
   + Fix a bunch of errors
