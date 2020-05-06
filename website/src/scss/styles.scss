@@ -180,6 +180,23 @@ body
     }
 }
 
+/** Custom Components **/
+.custom-postcomponent-renderededitor
+{
+    .custom-postcomponent-editor
+    {
+        height: 400px;
+        width: 100%;
+
+        textarea
+        {
+            height: 400px;
+            font-family: $mono;
+            font-size: 10;
+        }
+    }
+}
+
 /** Header Formatting **/
 
 .header

@@ -23,8 +23,8 @@
   "author": "Ben Croisdale",
   "license": "ISC",
   "browserslist": [
-      "defaults",
-      "not ie < 11"
+    "defaults",
+    "not ie < 11"
   ],
   "devDependencies": {
     "@types/lodash": "^4.14.149",
@@ -45,6 +45,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "@ts-stack/markdown": "^1.0.0",
     "foundation-sites": "^6.6.2",
     "jquery": "^3.5.0",
     "lodash": "^4.17.15",
