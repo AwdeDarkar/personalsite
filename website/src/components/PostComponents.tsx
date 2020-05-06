@@ -17,13 +17,14 @@
 import * as React from "react";
 import { Marked } from "@ts-stack/markdown";
 
-export interface RendererProps
+interface EditorProps
 {
     content: ContentState;
     onContentChange: (content: ContentState) => void;
 }
 
-export interface EditorProps { content: string; }
+export interface RendererProps { content: ContentState; }
+export interface RenderedEditorProps { content: string; }
 
 class ContentState
 {
@@ -45,11 +46,12 @@ class ContentState
     }
 }
 
-export class RenderedEditor extends React.Component<EditorProps, {content: ContentState}>
+export class RenderedEditor extends React.Component<RenderedEditorProps,
+    {content: ContentState}>
 {
     private content: ContentState;
 
-    constructor(props: EditorProps)
+    constructor(props: RenderedEditorProps)
     {
         super(props);
         this.state = {content: new ContentState(props.content)};
@@ -75,7 +77,6 @@ export class RenderedEditor extends React.Component<EditorProps, {content: Conte
             <div className="cell small-6">
                 <div className="custom-postcomponent-renderer">
                     <PostRenderer
-                     onContentChange={this.handleContentChange}
                      content={this.state.content}/>
                 </div>
             </div>
@@ -93,9 +94,9 @@ export class PostRenderer extends React.Component<RendererProps, {}>
     }
 }
 
-export class PostEditor extends React.Component<RendererProps, {}>
+class PostEditor extends React.Component<EditorProps, {}>
 {
-    constructor(props: RendererProps)
+    constructor(props: EditorProps)
     {
         super(props);
         this.handleChange = this.handleChange.bind(this);
