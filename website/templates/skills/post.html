@@ -8,19 +8,7 @@
 {% else %}
 <h1>Create a New Post</h1>
 <form id="postform" method="POST">
-    <input id="ptitle" type="text" name="title" placeholder="Title">
-    <hr>
     <div class="grid-x grid-padding-x custom-postcomponent-renderededitor">
-    </div>
-    <hr>
-    <label for="skills">Choose this post's skill associations
-        (or <a href="/skills/create">create a new skill</a>)</label>
-    <select id="skills" name="skills" multiple>
-        {% for skill in skills %}
-            <option value="{{ skill.id }}">{{ skill.name }}</option>
-        {% endfor %}
-    </select>
-    <input type="submit" class="success button" value="Create" />
 </form>
 {% endif %}
 {% endblock %}

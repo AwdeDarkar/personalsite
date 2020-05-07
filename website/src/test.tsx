@@ -8,7 +8,7 @@ import "../../node_modules/foundation-sites/scss/foundation";
 import "./scss/styles.scss";
 
 //const element:React.ReactElement = <Hello compiler="TypeScript" framework="React" />;
-const renderedEditor:React.ReactElement = <RenderedEditor content="TestingContent" />;
+const renderedEditor:React.ReactElement = <RenderedEditor />;
 
 ReactDOM.render(
     renderedEditor,

@@ -27,6 +27,7 @@
     "not ie < 11"
   ],
   "devDependencies": {
+    "@types/highlight.js": "^9.12.3",
     "@types/lodash": "^4.14.149",
     "@types/react": "^16.9.32",
     "@types/react-dom": "^16.9.6",
@@ -47,6 +48,7 @@
   "dependencies": {
     "@ts-stack/markdown": "^1.0.0",
     "foundation-sites": "^6.6.2",
+    "highlight.js": "^10.0.2",
     "jquery": "^3.5.0",
     "lodash": "^4.17.15",
     "npm-watch": "^0.6.0",
