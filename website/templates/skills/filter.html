@@ -6,6 +6,9 @@
 <h1>All content with skill {{ skillname }}</h1>
 {% for pskill in postskills %}
 <h2>{{ pskill.post.title }}</h2>
+{% if current_user.is_authenticated %}
+<h3><a href="/skills/post/{{ pskill.post.id }}">Edit</a></h3>
+{% endif %}
 {{ pskill.post.body }}
 <hr>
 {% endfor %}

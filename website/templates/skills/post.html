@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Create Blog Post{% endblock %}
+{% block title %}Create or Edit Blog Post{% endblock %}
 
 {% block content %}
 {% if not current_user.is_authenticated %}
     <h1>You must <a href="/auth/login">log in</a> to create a post!</h1>
 {% else %}
 <h1>Create a New Post</h1>
-<form id="postform" method="POST">
-    <div class="grid-x grid-padding-x custom-postcomponent-renderededitor">
-</form>
+<div class="custom-postcomponent-renderededitor"
+     data-id={{ post_id }}>
 {% endif %}
 {% endblock %}

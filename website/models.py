@@ -91,7 +91,7 @@ class Post(SiteModel, Base):
     body = Column(String, default="")
     """ String blog post content """
 
-    author_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+    author_id = Column(Integer, ForeignKey("user.id"), nullable=True)
     """ ID of the author of this post """
 
     author = relationship("User", back_populates="posts")

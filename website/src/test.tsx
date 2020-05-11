@@ -8,9 +8,13 @@ import "../../node_modules/foundation-sites/scss/foundation";
 import "./scss/styles.scss";
 
 //const element:React.ReactElement = <Hello compiler="TypeScript" framework="React" />;
-const renderedEditor:React.ReactElement = <RenderedEditor />;
+const editorElement:Element = document.getElementsByClassName(
+    "custom-postcomponent-renderededitor")[0]
+const renderedEditor:React.ReactElement = <RenderedEditor
+                                           id={
+                Number(editorElement.getAttribute("data-id"))} />;
 
 ReactDOM.render(
     renderedEditor,
-    document.getElementsByClassName("custom-postcomponent-renderededitor")[0]
+    editorElement
 );

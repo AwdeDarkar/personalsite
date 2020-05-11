@@ -15,13 +15,12 @@ Page views for skills sub-application
 """
 
 from flask import (
-    render_template, request
+    render_template, request, jsonify
 )
 from flask_login import login_required
 
 from website import models
 from website.db import get_session
-from website.auth.views import load_logged_in_user
 from website.skills import blueprint, app_name
 
 
@@ -40,6 +39,54 @@ def view_skill_filter(skillname):
     return render_template(f"{app_name}/filter.html", skillname=skillname, postskills=postskills)
 
 
+@blueprint.route("/api", methods=("POST",))
+def view_skill_api():
+    """ General API for skills and posts """
+    dbsess = get_session()
+    action = request.form["action"]
+    kind = request.form["kind"]
+    if kind == "post":
+        if action == "read":
+            post = models.Post.get_by_id(dbsess, int(request.form["post-id"]))
+            if not post:
+                return "", 404
+            print(post)
+            skills = [skill.id for skill in post.skills]
+            return jsonify({
+                "title": post.title,
+                "content": post.body,
+                "skill-ids": skills
+            })
+        if action == "create":
+            skills = request.form.getlist("skill-ids")
+            post = models.Post(title=request.form["title"],
+                               body=request.form["content"])
+            dbsess.add(post)
+            dbsess.commit()
+            for skill_id in skills:
+                postskill = models.PostSkill(post_id=post.id, skill_id=skill_id)
+                dbsess.add(postskill)
+                dbsess.commit()
+            return jsonify({"new-id": post.id}), 201
+        if action == "modify":
+            skills = request.form.getlist("skill-ids")
+            post = models.Post.get_by_id(dbsess, int(request.form["post-id"]))
+            post.title = request.form["title"]
+            post.body = request.form["content"]
+            dbsess.query(models.PostSkill).filter_by(post_id=post.id).delete()
+            for skill_id in skills:
+                postskill = models.PostSkill(post_id=post.id, skill_id=skill_id)
+                dbsess.add(postskill)
+                dbsess.commit()
+            dbsess.add(post)
+            dbsess.commit()
+            return "", 202
+        if action == "delete":
+            pass
+    if kind == "skill":
+        pass
+
+
 @blueprint.route("/create", methods=("GET", "POST"))
 @login_required
 def view_skill_create():
@@ -54,26 +101,21 @@ def view_skill_create():
         return render_template(f"{app_name}/create.html")
 
 
-@blueprint.route("/post", methods=("GET", "POST"))
+@blueprint.route("/post", methods=("GET",))
 @login_required
-def view_skill_post():
+def view_skill_post_create():
     if request.method == "GET":
-        skills = get_session().query(models.Skill).all()
-        return render_template(f"{app_name}/post.html", skills=skills)
-    elif request.method == "POST":
-        dbsess = get_session()
-        title = request.form["title"]
-        body = request.form["body"]
-        skills = request.form.getlist("skills")
-        post = models.Post(author_id=0, title=title, body=body)
-        dbsess.add(post)
-        dbsess.commit()
-        print(skills)
-        for skill_id in skills:
-            postskill = models.PostSkill(post_id=post.id, skill_id=skill_id)
-            dbsess.add(postskill)
-            dbsess.commit()
-        return render_template(f"{app_name}/post.html")
+        return render_template(f"{app_name}/post.html", post_id=-1)
+
+
+@blueprint.route("/post/<post_id>", methods=("GET",))
+@login_required
+def view_skill_post_edit(post_id):
+    if request.method == "GET":
+        try:
+            return render_template(f"{app_name}/post.html", post_id=int(post_id))
+        except ValueError:
+            return "Invalid post '{post_id}'", 400
 
 
 @blueprint.route("/link", methods=("GET", "POST"))
