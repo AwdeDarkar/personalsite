@@ -50,15 +50,12 @@ def view_skill_api():
             post = models.Post.get_by_id(dbsess, int(request.form["post-id"]))
             if not post:
                 return "", 404
-            print(post)
-            skills = [skill.id for skill in post.skills]
             return jsonify({
                 "title": post.title,
                 "content": post.body,
-                "skill-ids": skills
             })
         if action == "create":
-            skills = request.form.getlist("skill-ids")
+            skills = request.form.getlist("skill-ids[]")
             post = models.Post(title=request.form["title"],
                                body=request.form["content"])
             dbsess.add(post)
@@ -69,7 +66,7 @@ def view_skill_api():
                 dbsess.commit()
             return jsonify({"new-id": post.id}), 201
         if action == "modify":
-            skills = request.form.getlist("skill-ids")
+            skills = [int(_id) for _id in request.form.getlist("skill-ids[]")]
             post = models.Post.get_by_id(dbsess, int(request.form["post-id"]))
             post.title = request.form["title"]
             post.body = request.form["content"]
@@ -84,7 +81,19 @@ def view_skill_api():
         if action == "delete":
             pass
     if kind == "skill":
-        pass
+        if action == "read":
+            send_skills = []
+            skills = dbsess.query(models.Skill).all()
+            post = models.Post.get_by_id(dbsess, int(request.form["post-id"]))
+            for skill in skills:
+                send_skills.append({
+                    "name": skill.name,
+                    "id": skill.id,
+                    "selected": skill in [skl.skill for skl in post.skills] if post else False,
+                })
+            return jsonify({"skills": send_skills}), 200
+        return "", 400
+    return "", 400
 
 
 @blueprint.route("/create", methods=("GET", "POST"))

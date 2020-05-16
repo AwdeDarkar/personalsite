@@ -64,13 +64,11 @@ interface RenderedEditorState
 
 function loadStateFromID(id: number, editor: RenderedEditor)
 {
-    var serverSkills = loadSkills();
-
     if (id === -1)
     {
         editor.state = {
             title: "New Post",
-            skillList: serverSkills,
+            skillList: [],
             content: "",
             changed: false
         };
@@ -94,18 +92,33 @@ function loadStateFromID(id: number, editor: RenderedEditor)
             {
                 editor.setState({
                     title: data["title"],
-                    skillList: serverSkills,
+                    skillList: [],
                     content: data["content"],
                     changed: false
                 });
             }
         });
     }
+    loadSkills(id, function(skills: skill[]){
+        editor.setState({
+            title: editor.state.title,
+            skillList: skills,
+            content: editor.state.content,
+            changed: editor.state.changed
+        });
+    });
 }
 
 function saveStateToID(id: number, state: RenderedEditorState,
     onCreate: (newid: number) => void): void
 {
+    var skill_ids: number[] = [];
+    state.skillList.forEach(function(skl: skill){
+        if(skl.selected) { skill_ids.push(skl.id); }
+    });
+    console.log(skill_ids);
+    console.log(state.skillList);
+
     if (id === -1)
     {
         $.post({
@@ -115,7 +128,7 @@ function saveStateToID(id: number, state: RenderedEditorState,
                 "kind": "post",
                 "title": state.title,
                 "content": state.content,
-                "skill-ids": []
+                "skill-ids": skill_ids
             },
             success: function(data: any, textStatus: string, jqxhr: any)
             {
@@ -133,15 +146,36 @@ function saveStateToID(id: number, state: RenderedEditorState,
                 "post-id": id,
                 "title": state.title,
                 "content": state.content,
-                "skill-ids": []
+                "skill-ids": skill_ids
             },
         });
     }
 }
 
-function loadSkills(): skill[]
+function loadSkills(id: number, setSkills: (skills: skill[]) => void)
 {
-    return [];
+    $.post({
+        url: "/skills/api",
+        data: {
+            "action": "read",
+            "kind": "skill",
+            "post-id": id,
+        },
+        success: function(data: any, textStatus: string, jqxhr: any)
+        {
+            var skills: skill[] = [];
+            console.log(data);
+            var rawskills = data.skills;
+            rawskills.forEach(function(rawskill: any) {
+                skills.push({
+                    name: rawskill.name,
+                    id: rawskill.id,
+                    selected: rawskill.selected
+                });
+            });
+            setSkills(skills);
+        }
+    });
 }
 
 /*
@@ -276,7 +310,7 @@ class TitleBar extends React.Component<TitleProps, {}>
 
     render()
     {
-        return <input id="ptitle" type="text" name="title" defaultValue={this.props.title}
+        return <input id="ptitle" type="text" name="title" value={this.props.title}
                 onChange={this.handleChange}
                 placeholder="Post Title" />;
     }
@@ -290,24 +324,31 @@ class SkillsSelector extends React.Component<SkillsProps, {}>
         this.handleChange = this.handleChange.bind(this);
     }
 
-    private handleChange(event: React.SyntheticEvent<HTMLOptionElement>)
+    private handleChange(event: React.SyntheticEvent<HTMLSelectElement>)
     {
-        let target = event.target as HTMLOptionElement;
+        let target = event.target as HTMLSelectElement;
         let skills: skill[] = [];
-        //TODO
+        for(var i = 0; i < target.options.length; i++)
+        {
+            let option = target.options[i];
+            skills.push({
+                name: option.innerHTML,
+                id: Number(option.value),
+                selected: option.selected
+            });
+        }
         this.props.onContentChange(skills);
     }
 
     render()
     {
         let skillOptions: JSX.Element[] = [];
-        
+        var self: SkillsSelector = this;
         this.props.skillList.forEach(function(skl: skill)
             {
                 skillOptions.push(
-                    <option value={this.props.skill.id}
-                     onChange={this.handleChange}
-                     selected={this.props.skill.selected}>{this.props.skill.name}</option>
+                    <option value={skl.id}
+                     selected={skl.selected}>{skl.name}</option>
                 );
             }
         );
@@ -316,7 +357,7 @@ class SkillsSelector extends React.Component<SkillsProps, {}>
             <React.Fragment>
                 <label htmlFor="skills">{`Choose this post's skill associations `}
                     (or <a href="/skills/create">{`create a new skill`}</a>)</label>
-                <select id="skills" name="skills" multiple>
+                <select onChange={self.handleChange} id="skills" name="skills" multiple>
                     {skillOptions}
                 </select>
             </React.Fragment>
