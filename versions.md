@@ -102,3 +102,7 @@ are just plans, though, and can change at any time.
 1.0: Hosting and Public Release
 
   + Fix all the dumb little bugs and typos (yes, they are there, read closely)
+
+1.0.1: Actually Good Editor - done 2020-05-16 13:07
+
+  + Post editor that has useful functionality
