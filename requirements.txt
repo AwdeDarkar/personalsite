@@ -36,4 +36,4 @@ Werkzeug == 1.0.0
 alembic == 1.4.2
 
 # personal-site/node_modules/node-gyp/gyp/setup.py: 7
-setuptools == 39.0.1
+setuptools == 65.5.1
